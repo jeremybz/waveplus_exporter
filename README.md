@@ -33,5 +33,8 @@ optional arguments:
 
 ```
 
+# Dashboard
+Grafana [dashboard](https://grafana.com/grafana/dashboards/12310)
+
 # License
 The original [reader from Airthings](https://github.com/Airthings/waveplus-reader) uses the [MIT License](LICENSE), and so does this.
