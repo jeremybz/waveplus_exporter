@@ -33,6 +33,7 @@ import logging
 import argparse
 import tableprint
 
+from threading import Lock
 from bluepy.btle import UUID, Peripheral, Scanner, DefaultDelegate
 from prometheus_client import start_http_server, Metric, Summary, REGISTRY
 
@@ -98,6 +99,7 @@ def parseSerialNumber(ManuDataHexStr):
 
 class WavePlus():
     def __init__(self, SerialNumber):
+        self._lock         = Lock()
         self.periph        = None
         self.curr_val_char = None
         self.MacAddr       = None
@@ -150,28 +152,29 @@ class WavePlus():
             self.curr_val_char = None
 
     def collect(self):
-        self.connect()
-        sensors = self.read()
+        with self._lock:
+          self.connect()
+          sensors = self.read()
 
-        humidity     = str(sensors.getValue(SENSOR_IDX_HUMIDITY))
-        radon_st_avg = str(sensors.getValue(SENSOR_IDX_RADON_SHORT_TERM_AVG))
-        radon_lt_avg = str(sensors.getValue(SENSOR_IDX_RADON_LONG_TERM_AVG))
-        temperature  = str(sensors.getValue(SENSOR_IDX_TEMPERATURE))
-        pressure     = str(sensors.getValue(SENSOR_IDX_REL_ATM_PRESSURE))
-        CO2_lvl      = str(sensors.getValue(SENSOR_IDX_CO2_LVL))
-        VOC_lvl      = str(sensors.getValue(SENSOR_IDX_VOC_LVL))
+          humidity     = str(sensors.getValue(SENSOR_IDX_HUMIDITY))
+          radon_st_avg = str(sensors.getValue(SENSOR_IDX_RADON_SHORT_TERM_AVG))
+          radon_lt_avg = str(sensors.getValue(SENSOR_IDX_RADON_LONG_TERM_AVG))
+          temperature  = str(sensors.getValue(SENSOR_IDX_TEMPERATURE))
+          pressure     = str(sensors.getValue(SENSOR_IDX_REL_ATM_PRESSURE))
+          CO2_lvl      = str(sensors.getValue(SENSOR_IDX_CO2_LVL))
+          VOC_lvl      = str(sensors.getValue(SENSOR_IDX_VOC_LVL))
 
-        metric = Metric('waveplus', 'airthings waveplus sensor values', 'gauge')
-        metric.add_sample('humidity_percent', value=humidity, labels={})
-        metric.add_sample('radon_short_term_avg_becquerels', value=radon_st_avg, labels={})
-        metric.add_sample('radon_long_term_avg_becquerels', value=radon_lt_avg, labels={})
-        metric.add_sample('temperature_celsius', value=temperature, labels={})
-        metric.add_sample('pressure_pascal', value=pressure, labels={})
-        metric.add_sample('carbondioxide_ppm', value=CO2_lvl, labels={})
-        metric.add_sample('voc_ppb', value=VOC_lvl, labels={})
+          metric = Metric('waveplus', 'airthings waveplus sensor values', 'gauge')
+          metric.add_sample('humidity_percent', value=humidity, labels={})
+          metric.add_sample('radon_short_term_avg_becquerels', value=radon_st_avg, labels={})
+          metric.add_sample('radon_long_term_avg_becquerels', value=radon_lt_avg, labels={})
+          metric.add_sample('temperature_celsius', value=temperature, labels={})
+          metric.add_sample('pressure_pascal', value=pressure, labels={})
+          metric.add_sample('carbondioxide_ppm', value=CO2_lvl, labels={})
+          metric.add_sample('voc_ppb', value=VOC_lvl, labels={})
 
-        self.disconnect()
-        yield metric
+          self.disconnect()
+          yield metric
 
 class Sensors():
     def __init__(self):
@@ -218,4 +221,3 @@ try:
 
 finally:
     waveplus.disconnect()
-
