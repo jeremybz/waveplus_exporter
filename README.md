@@ -18,7 +18,7 @@ $ sudo bluetoothctl
 ## Python Setup
 ```
 $ sudo apt install python-pip libglib2.0-dev
-$ sudo pip2 install bluepy==1.2.0
+$ sudo pip2 install bluepy==1.2.0 prometheus_client
 ```
 
 ## Prometheus Setup
