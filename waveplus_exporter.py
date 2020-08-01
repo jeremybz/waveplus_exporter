@@ -65,7 +65,7 @@ log.addHandler(ch)
 # ===============================
 parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.ArgumentDefaultsHelpFormatter)
 
-parser.add_argument('--port', nargs='?', type=int, help='The TCP port to listen on', default=9127)
+parser.add_argument('--port', nargs='?', type=int, help='The TCP port to listen on', default=9744)
 parser.add_argument('--bind', nargs='?', help='The interface/IP to bind to', default='0.0.0.0')
 parser.add_argument('--periodseconds', nargs='?', type=int, help='number of seconds to wait between sampling', default='60')
 parser.add_argument('--serialnumber', required=True, type=int, nargs='?')

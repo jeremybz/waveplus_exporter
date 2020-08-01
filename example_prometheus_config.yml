@@ -1,0 +1,14 @@
+global:
+  external_labels:
+    monitor: 'home_rpi'
+
+scrape_configs:
+  - job_name: 'waveplus-basement'
+    scrape_interval: 2m
+    static_configs:
+      - targets: ['localhost:9744']
+
+# use remote_write to send data to another prometheus server
+remote_write:
+  - url: http://my.prometheus.server.in.the.cloud/api/v1/write
+
