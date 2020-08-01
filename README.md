@@ -33,7 +33,7 @@ usage: waveplus_exporter.py [-h] [--port [PORT]] [--bind [BIND]] [--periodsecond
 
 optional arguments:
   -h, --help            show this help message and exit
-  --port [PORT]         The TCP port to listen on (default: 9127)
+  --port [PORT]         The TCP port to listen on (default: 9744)
   --bind [BIND]         The interface/IP to bind to (default: 0.0.0.0)
   --periodseconds [PERIODSECONDS] number of seconds to wait between sampling (default: 60)
 
