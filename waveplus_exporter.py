@@ -31,7 +31,6 @@ import time
 import struct
 import logging
 import argparse
-import tableprint
 
 from threading import Lock
 from bluepy.btle import UUID, Peripheral, Scanner, DefaultDelegate
@@ -116,10 +115,11 @@ class WavePlus():
                 searchCount += 1
                 for dev in devices:
                     ManuData = dev.getValueText(255)
-                    SN = parseSerialNumber(ManuData)
-                    if (SN == self.SN):
-                        self.MacAddr = dev.addr # exits the while loop on next conditional check
-                        break # exit for loop
+                    if (ManuData != None):
+                        SN = parseSerialNumber(ManuData)
+                        if (SN == self.SN):
+                            self.MacAddr = dev.addr # exits the while loop on next conditional check
+                            break # exit for loop
 
             if (self.MacAddr is None):
                 log.error( "ERROR: Could not find device.")
