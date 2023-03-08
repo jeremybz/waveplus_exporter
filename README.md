@@ -48,7 +48,7 @@ docker build https://github.com/jeremybz/waveplus_exporter.git -t waveplus_expor
 docker run waveplus -v /var/run/dbus/:/var/run/dbus/ --privileged --net=host -e WAVEPLUS_SERIALNUM=<your_serial_number>
 ```
 
-a Docker Compose stanza for this might look like:
+An equivalent Docker Compose stanza for this might look like:
 
 ```
 waveplus_exporter:
