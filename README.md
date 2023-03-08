@@ -39,6 +39,30 @@ optional arguments:
 
 ```
 
+# Usage in Docker
+
+The included Dockerfile can be used to run this exporter within a Docker container, as follows:
+
+```
+docker build https://github.com/jeremybz/waveplus_exporter.git -t waveplus_exporter
+docker run waveplus -v /var/run/dbus/:/var/run/dbus/ --privileged --net=host -e WAVEPLUS_SERIALNUM=<your_serial_number>
+```
+
+a Docker Compose stanza for this might look like:
+
+```
+waveplus_exporter:
+    build: https://github.com/jeremybz/waveplus_exporter.git
+    privileged: true
+    network_mode: host
+    environment:
+      - WAVEPLUS_SERIALNUM=<your_serial_number>
+    volumes:
+      - '/var/run/dbus/:/var/run/dbus/'
+```
+
+Both of these setups assume that bluez is setup and running on the host OS (this is the case, for example, on a fresh Raspbian install).
+
 # Dashboard
 Grafana [dashboard](https://grafana.com/grafana/dashboards/12310)
 
