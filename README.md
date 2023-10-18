@@ -17,8 +17,11 @@ $ sudo bluetoothctl
 
 ## Python Setup
 ```
-$ sudo apt install python-pip libglib2.0-dev
-$ sudo pip2 install bluepy==1.2.0 prometheus_client
+$ sudo apt install python3 python3-pip libglib2.0-dev python3-venv
+$ export VENV=/opt/venv
+$ sudo python3 -m venv $VENV && $VENV/bin/pip3 install python-dotenv prometheus_client bluepy
+$ export PATH="$VENV/bin:$PATH"
+$ sudo pip3 install bluepy prometheus_client
 ```
 
 ## Prometheus Setup
@@ -29,7 +32,7 @@ $ prometheus --config.file example_prometheus_config.yml
 ```
 # Usage
 ```
-usage: waveplus_exporter.py [-h] [--port [PORT]] [--bind [BIND]] [--periodseconds [PERIODSECONDS]] --serialnumber [SERIALNUMBER]
+usage: python3 waveplus_exporter.py [-h] [--port [PORT]] [--bind [BIND]] [--periodseconds [PERIODSECONDS]] --serialnumber [SERIALNUMBER]
 
 optional arguments:
   -h, --help            show this help message and exit
