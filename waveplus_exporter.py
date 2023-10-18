@@ -64,7 +64,7 @@ log.addHandler(ch)
 # ===============================
 parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.ArgumentDefaultsHelpFormatter)
 
-parser.add_argument('--port', nargs='?', type=int, help='The TCP port to listen on', default=9744)
+parser.add_argument('--port', nargs='?', type=int, help='The TCP port to listen on', default=9127)
 parser.add_argument('--bind', nargs='?', help='The interface/IP to bind to', default='0.0.0.0')
 parser.add_argument('--periodseconds', nargs='?', type=int, help='number of seconds to wait between sampling', default='60')
 parser.add_argument('--serialnumber', required=True, type=int, nargs='?')
@@ -78,7 +78,8 @@ SamplePeriod = args.periodseconds
 # ====================================
 
 def parseSerialNumber(ManuDataHexStr):
-    if (ManuDataHexStr == "None"):
+    if ( ManuDataHexStr == None or  ManuDataHexStr == "None"
+):
         SN = "Unknown"
     else:
         ManuData = bytearray.fromhex(ManuDataHexStr)
@@ -115,11 +116,10 @@ class WavePlus():
                 searchCount += 1
                 for dev in devices:
                     ManuData = dev.getValueText(255)
-                    if (ManuData != None):
-                        SN = parseSerialNumber(ManuData)
-                        if (SN == self.SN):
-                            self.MacAddr = dev.addr # exits the while loop on next conditional check
-                            break # exit for loop
+                    SN = parseSerialNumber(ManuData)
+                    if (SN == self.SN):
+                        self.MacAddr = dev.addr # exits the while loop on next conditional check
+                        break # exit for loop
 
             if (self.MacAddr is None):
                 log.error( "ERROR: Could not find device.")
